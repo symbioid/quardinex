@@ -1,0 +1,65 @@
+import React, {Fragment, useState, useEffect} from 'react';
+import './equalize.css';
+import './App.css';
+
+
+const level = [ [2, 1, 1, 3],
+				[2, 1, 2, 1],
+    			[1, 2, 1, 2],
+				[1, 2, 1, 2] ]
+
+function node(x, y,v) {
+    this.x = x;
+    this.y = y;
+    this.movevalue = v;
+}
+
+
+const Row = ({row}) => {
+    return(
+        <Fragment>
+            { row.map( (value)=> {
+                return (
+                    <div className="cell">
+                        { value }                        
+                    </div>
+                )
+             })}
+        </Fragment>
+    )
+}
+
+const Board = ({level}) => {
+    return (
+    <div className="grid">
+        { level.map( (row)=> {
+            return(
+                <div className="row" >
+                    <Row row = {row}/>
+                </div>
+            )
+         })}
+    </div>
+    );
+}
+
+function App() {
+
+// console.log("hello World!")
+const [num, setNum] = useState(1)
+useEffect (()=>{
+    console.log("fuck",num)
+
+}, [num])
+
+return (
+        <div className="app">
+        <div className="container">
+            <h2 onClick={()=>{setNum(num+1) }}>Quarden <br/>{num} Run it, Flip it, Ship it</h2>
+            <Board level={level} />
+        </div>
+    </div>
+  );
+}
+
+export default App;

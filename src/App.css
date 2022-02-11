@@ -1,38 +1,66 @@
-.App {
-  text-align: center;
+:root {
+  --cell-size: 100px;
+  --border-color: black;
+  --border-size: 3px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background: black;
+  color: black;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app {
   display: flex;
+  min-height: 100vh;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+h2 {
+  width: 100%;
   color: white;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.grid {
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.cell {
+  flex: 0 0 auto;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background: #dad3c3;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-size) solid var(--border-color);
+  font-size: 28px;
+}
+
+.cell-target {
+  background: #f7c694;
+  cursor: pointer;
+}
+
+.cell-removed {
+  background: var(--border-color);
+  color: var(--border-color);
+  border: none;
+  cursor: default;
+  visibility: hidden;
+}
+
+.cell-active {
+  background: #5abbb3;
+  border: calc(var(--border-size)*2) solid black;
+  visibility: visible;
 }
