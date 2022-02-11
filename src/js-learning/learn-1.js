@@ -9,8 +9,8 @@ const directionMatrix = [-1,1,1,-1];
 
 board = [[],[],[]];
 
-let row_displaced = 0;
-let column_displaced = 0;
+let rowDisplaced = 0;
+let columnDisplaced = 0;
 
 let node = {
 	row : -1,
@@ -57,15 +57,28 @@ let displayBoard = (board) => {
 board = buildBoard();
 displayBoard(board);
 
-/*
-let addTargets = () => {
+
+let addTargets = (board) => {
 	for(let row=0; row < boardSize; row++) {
-		for (let column=0; column<boardSize; column++ ) {
+		for (let col=0; col<boardSize; col++ ) {
 			for (let i = 0; i<numPolySides; i++) {
+				rowDisplaced = row + board[row][column].value * directionMatrix[i];
+				colDisplaced = col + board[row][column].value * directionMatrix[i];
+				if ((rowDisplaced < 0) | (rowDisplaced > 3) | (colDisplaced < 0 ) | (colDisplaced > 3)) {
+					board[row][col].targets = null;
+				}
+				else if (i % 2 === 0) {
+					board[row][col].targets = board[rowDisplaced][col];
+				}
+				else {
+					board[row][col].targets = board[row][colDisplaced];
+
+				}
 			}
 		}
 	}
 }
+
 let displayTargets = () => {
 	for (let row=0; row < boardSize; row++){
 		for (let column=0; column<boardSize; column++){
@@ -75,4 +88,4 @@ let displayTargets = () => {
 		}
 	}
 }
-*/
+
