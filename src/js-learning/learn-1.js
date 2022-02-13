@@ -1,4 +1,3 @@
-console.log("hello world!");
 const boardSize = 3;
 const numPolySides = 4;
 const level = [ [2, 1, 1],
@@ -9,12 +8,12 @@ const directionMatrix = [-1,1,1,-1];
 
 board = [[],[],[]];
 
-let rowDisplaced = 0;
-let columnDisplaced = 0;
+let targetRow = 0;
+let targetCol = 0;
 
 let node = {
 	row : -1,
-	column : -1,
+	col : -1,
 	value : 0,
 	visited : false,
 	targets : [],
@@ -24,7 +23,7 @@ let node = {
 let buildNode = (row, col, val) => {
 	let tempNode = { ... node }
 	tempNode.row = row;
-	tempNode.column = col;
+	tempNode.col = col;
 	tempNode.value = val
 	return tempNode
 }
@@ -54,38 +53,55 @@ let displayBoard = (board) => {
 	}
 }
 
-board = buildBoard();
-displayBoard(board);
-
-
 let addTargets = (board) => {
+	console.log(`adding targets!`);
 	for(let row=0; row < boardSize; row++) {
 		for (let col=0; col<boardSize; col++ ) {
 			for (let i = 0; i<numPolySides; i++) {
-				rowDisplaced = row + board[row][column].value * directionMatrix[i];
-				colDisplaced = col + board[row][column].value * directionMatrix[i];
-				if ((rowDisplaced < 0) | (rowDisplaced > 3) | (colDisplaced < 0 ) | (colDisplaced > 3)) {
-					board[row][col].targets = null;
-				}
-				else if (i % 2 === 0) {
-					board[row][col].targets = board[rowDisplaced][col];
-				}
-				else {
-					board[row][col].targets = board[row][colDisplaced];
+				let targetRow = row + board[row][col].value * directionMatrix[i];
+				let targetCol = col + board[row][col].value * directionMatrix[i];
 
+				if ((targetRow < 0 | targetRow>= boardSize) | (targetCol < 0  | targetCol >= boardSize)) {
+					board[row][col].targets[i] = null;
+					board[row][col].targets[i] = null;
+
+					if(i % 2 === 0) {
+						console.log(`[${targetRow}][${col}]`);
+					} else {
+						console.log(`[${row}][${targetCol}]`);
+					}
+					console.log(`board [${row}][${col}] (${i}) | [-][-]`);
 				}
+				else if (i % 2 === 0 ){
+					board[row][col].targets[i] = board[targetRow][col];
+						console.log(`board [${row}][${col}] (${i}) | [${board[row][col].targets[i].row}][${board[row][col].targets[i].col}]`);
+					} else {
+						board[row][col].targets[i] = board[row][targetCol];
+						console.log(`board [${row}][${col}] (${i}) | [${board[row][col].targets[i].row}][${board[row][col].targets[i].col}]`);
+					}
 			}
+			console.log(`----------------------------------`)
 		}
+		console.log(`----------------------------------`)
 	}
 }
 
-let displayTargets = () => {
+
+let displayTargets = (board) => {
 	for (let row=0; row < boardSize; row++){
-		for (let column=0; column<boardSize; column++){
+		for (let col=0; col<boardSize; col++){
 			for(let i = 0; i < numPolySides; i++){
-				console.log(`board [${row}][${column}] | Target [${i}] : [${board[row][column].targets[i].row}][${board[row][column].targets[i].column}]`);
+				if(board[row][col].targets[i] != null) {
+					console.log(`board [${row}][${col}] (${i}) : [${board[row][col].targets[i].row}][${board[row][col].targets[i].col}]`);
+				} else {
+					console.log(`board [${row}][${col}] (${i}) : [-][-]`);
+				}
 			}
 		}
 	}
 }
 
+board = buildBoard();
+//displayBoard(board);
+addTargets(board);
+//displayTargets(board);
