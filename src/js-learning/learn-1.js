@@ -41,44 +41,43 @@ let buildBoard = () => {
 		}
 	}
 	console.log(`Board Built!`)
+	console.log(`----------------------------------`)
 	return board;
 }
 
 let displayBoard = (board) => {
 	console.log(`Displaying Board...`);
 	for (row = 0; row < boardSize; row++){
-		for(col = 0; col < boardSize; col++){
+		for(col=0; col < boardSize; col++){
+			//process.stdout.write(`${board[row][col].value}`);
 			console.log(`${board[row][col].value}`);
 		}
 	}
 }
 
 let addTargets = (board) => {
-	console.log(`adding targets!`);
 	for(let row=0; row < boardSize; row++) {
 		for (let col=0; col<boardSize; col++ ) {
+			console.log(`Board[${row}][${col}] =  ${board[row][col].value}`);
 			for (let i = 0; i<numPolySides; i++) {
-				let targetRow = row + board[row][col].value * directionMatrix[i];
-				let targetCol = col + board[row][col].value * directionMatrix[i];
+				if(i % 2 === 0) {
+					targetRow = row + board[row][col].value * directionMatrix[i];
+					targetCol = col;
+				} else {
+					targetRow = row;
+					targetCol = col + board[row][col].value * directionMatrix[i];
 
-				if ((targetRow < 0 | targetRow>= boardSize) | (targetCol < 0  | targetCol >= boardSize)) {
-					board[row][col].targets[i] = null;
-					board[row][col].targets[i] = null;
-
-					if(i % 2 === 0) {
-						console.log(`[${targetRow}][${col}]`);
-					} else {
-						console.log(`[${row}][${targetCol}]`);
-					}
-					console.log(`board [${row}][${col}] (${i}) | [-][-]`);
 				}
-				else if (i % 2 === 0 ){
-					board[row][col].targets[i] = board[targetRow][col];
-						console.log(`board [${row}][${col}] (${i}) | [${board[row][col].targets[i].row}][${board[row][col].targets[i].col}]`);
-					} else {
-						board[row][col].targets[i] = board[row][targetCol];
-						console.log(`board [${row}][${col}] (${i}) | [${board[row][col].targets[i].row}][${board[row][col].targets[i].col}]`);
-					}
+				console.log(`TARGET [${i}] ACQUIRED: [${targetRow}][${targetCol}]`);
+
+                if ((targetRow < 0 | targetRow>= boardSize) | (targetCol < 0  | targetCol >=  boardSize)) {
+						board[row][col].targets[i] = null;
+						console.log(`[${targetRow}][${targetCol}] ASSIGNING TARGET[${i}] = [NULL] // (Out Of Bounds)`)
+				}
+				else {
+					board[row][col].targets[i] = board[targetRow][targetCol];
+					console.log(`[${targetRow}][${targetCol}] ASSIGNING TARGET[${i}] = [${targetRow}][${targetCol}]`)
+				}
 			}
 			console.log(`----------------------------------`)
 		}
@@ -87,21 +86,6 @@ let addTargets = (board) => {
 }
 
 
-let displayTargets = (board) => {
-	for (let row=0; row < boardSize; row++){
-		for (let col=0; col<boardSize; col++){
-			for(let i = 0; i < numPolySides; i++){
-				if(board[row][col].targets[i] != null) {
-					console.log(`board [${row}][${col}] (${i}) : [${board[row][col].targets[i].row}][${board[row][col].targets[i].col}]`);
-				} else {
-					console.log(`board [${row}][${col}] (${i}) : [-][-]`);
-				}
-			}
-		}
-	}
-}
-
 board = buildBoard();
 //displayBoard(board);
 addTargets(board);
-//displayTargets(board);
