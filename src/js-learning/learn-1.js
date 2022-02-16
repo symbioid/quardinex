@@ -48,8 +48,7 @@ let buildBoard = () => {
 let displayBoard = (board) => {
 	console.log(`Displaying Board...`);
 	for (row = 0; row < boardSize; row++){
-		for(col=0; col < boardSize; col++){
-			//process.stdout.write(`${board[row][col].value}`);
+		for(col = 0; col < boardSize; col++){
 			console.log(`${board[row][col].value}`);
 		}
 	}
@@ -70,6 +69,7 @@ let addTargets = (board) => {
 				}
 				console.log(`TARGET [${i}] ACQUIRED: [${targetRow}][${targetCol}]`);
 
+				//------bounds checking - any target whose (row | col) (< 0 | >boardsize) get set "NULL"
                 if ((targetRow < 0 | targetRow>= boardSize) | (targetCol < 0  | targetCol >=  boardSize)) {
 						board[row][col].targets[i] = null;
 						console.log(`[${targetRow}][${targetCol}] ASSIGNING TARGET[${i}] = [NULL] // (Out Of Bounds)`)
@@ -87,5 +87,5 @@ let addTargets = (board) => {
 
 
 board = buildBoard();
-//displayBoard(board);
+displayBoard(board);
 addTargets(board);
