@@ -24,13 +24,23 @@ let node = {
 	targets : []
 }
 
-let buildNode = (row, col, val) => {
+/*let buildNode = (row, col, val) => {
 	let tempNode = { ... node }
 	tempNode.row = row;
 	tempNode.col = col;
 	tempNode.value = val;
 	return tempNode;
-}
+}*/
+
+let buildNode = (row, col, val) => {
+	return {
+	  row : row,
+	  col : col,
+	  value : val,
+	  visited : false,
+	  targets : []
+	}
+  }
 
 let getNode = (board, row, col) => {
 	return board[row][col]
@@ -115,5 +125,5 @@ showTargets = (node) =>{
 board = buildBoard();
 displayBoard(board);
 addTargets(board);
-setTimeout(()=>console.log(board),10000);
+//setTimeout(()=>console.log(board),1000);
 
