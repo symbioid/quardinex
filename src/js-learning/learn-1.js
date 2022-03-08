@@ -78,12 +78,6 @@ let addTargets = (board) => {
 					board[row][col].targets[i] = null;
 				}
 				else {
-					let node = {
-						row: board[targetRow][targetCol].row,
-						col: board[targetRow][targetCol].col,
-						value: board[targetRow][targetCol].value,
-					}
-					// board[row][col].targets[i] = node;
                     board[row][col].targets[i] = board[targetRow][targetCol];
 				}
 			}
@@ -110,7 +104,6 @@ let traverser = (node) => {
     for (i = 0; i < numPolySides; i++) {
         console.log(`${i}:`);
         if (i >= numPolySides){
-
             allPaths.push(currentPath);
             currentNode = prevNode;
             console.log(`x`);
@@ -128,7 +121,7 @@ let traverser = (node) => {
         }
     }
 }
-
+allPaths.push(currentPath);
 
 board = buildBoard();
 //console.log(board);
@@ -139,3 +132,10 @@ walker = traverser(board[0][0]);
 currentPath.forEach(e => {
     console.log(`[${e.row}][${e.col}]`);
 })
+
+
+for (i = 0; i < allPaths.length; i++){
+    for( j = 0; j < allPaths[i].length; j++){
+        console.log(`[${allPaths[i][j].row}][${allPaths[i][j].col}], VALUE: ${allPaths[i][j].value}`);
+    }
+}
