@@ -4,8 +4,8 @@ const numPolySides = 4;
 let targetRow = 0;
 let targetCol = 0;
 
-let workingPath = [];
 let allPaths = [];
+let currentPath = [];
 
 
 const level = [ [2, 1, 1],
@@ -14,14 +14,15 @@ const level = [ [2, 1, 1],
 			  ];
 const directionMatrix = [-1,1,1,-1];  //(row,up-)(col,right+)(row,down+)(row,)
 
-board = [[],[],[]];
+let board = [[],[],[]];
 
 let node = {
 	row : -1,
 	col : -1,
 	value : 0,
 	visited : false,
-	targets : []
+	targets : [],
+	mostRecentTargetIDX : 0
 }
 
 let buildNode = (row, col, val) => {
@@ -30,7 +31,8 @@ let buildNode = (row, col, val) => {
 	  col : col,
 	  value : val,
 	  visited : false,
-	  targets : []
+	  targets : [],
+	  targetIndex : 0
 	}
   }
 
@@ -71,11 +73,9 @@ let addTargets = (board) => {
 					targetRow = row;
 					targetCol = col + (board[row][col].value * directionMatrix[i]);
 				}
-				//Bounds Check, if not in board, assign null, otherwise, assign new object
-				//based on values calculated above.
+
                 if ((targetRow < 0 || targetRow>= boardSize) || (targetCol < 0  || targetCol >=  boardSize)) {
 					board[row][col].targets[i] = null;
-					console.log("null ",board[row][col].targets[i],row,col,i)
 				}
 				else {
 					let node = {
@@ -83,14 +83,14 @@ let addTargets = (board) => {
 						col: board[targetRow][targetCol].col,
 						value: board[targetRow][targetCol].value,
 					}
-					board[row][col].targets[i] = node;
-					console.log("undefined ", board[row][col].targets[i],row,col,i)
+					// board[row][col].targets[i] = node;
+                    board[row][col].targets[i] = board[targetRow][targetCol];
 				}
 			}
 		}
 	}
 }
-showTargets = (node) =>{
+let showTargets = (node) =>{
 	for(i=0;i<numPolySides;i++){
 		if(node.targets[i] != null){
 			console.log(`target ${i}: [${node.targets[i].row}][${node.targets[i].col}]`);
@@ -101,6 +101,41 @@ showTargets = (node) =>{
 	}
 }
 
+let traverser = (node) => {
+    currentNode = node;
+    if(currentNode.visited == false){
+        currentNode.visited = true;
+        currentPath.push(currentNode);
+    }
+    for (i = 0; i < numPolySides; i++) {
+        console.log(`${i}:`);
+        if (i >= numPolySides){
+
+            allPaths.push(currentPath);
+            currentNode = prevNode;
+            console.log(`x`);
+        }
+        else if (currentNode.targets[i] == null || currentNode.targets[i].visited == true){
+            console.log("NO TARGET, EXIT TO NEXT LOOP ITER");
+        }
+        else if(currentNode.targets[i] != null && currentNode.targets[i].visited == false){
+            prevNode = currentNode;
+            currentNode = currentNode.targets[i];
+            currentNode.visited = true;
+            console.log(`MOVED TO [${currentNode.row}][${currentNode.col}], VALUE: ${currentNode.value}`);
+            currentPath.push(currentNode);
+            traverser(currentNode);
+        }
+    }
+}
+
+
 board = buildBoard();
+//console.log(board);
 displayBoard(board);
 addTargets(board);
+//showTargets(board[0][0]);
+walker = traverser(board[0][0]);
+currentPath.forEach(e => {
+    console.log(`[${e.row}][${e.col}]`);
+})
