@@ -22,7 +22,7 @@ let node = {
 	value : 0,
 	visited : false,
 	targets : [],
-	mostRecentTargetIDX : 0
+	mostRecentTarget : 0
 }
 
 let buildNode = (row, col, val) => {
@@ -32,7 +32,7 @@ let buildNode = (row, col, val) => {
 	  value : val,
 	  visited : false,
 	  targets : [],
-	  targetIndex : 0
+	  mostRecentTarget : 0
 	}
   }
 
@@ -106,9 +106,9 @@ let traverser = (node) => {
         if (i >= numPolySides){
             allPaths.push(currentPath);
             currentNode = prevNode;
-            console.log(`x`);
+            console.log(`XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`);
         }
-        else if (currentNode.targets[i] == null || currentNode.targets[i].visited == true){
+        if (currentNode.targets[i] == null || currentNode.targets[i].visited == true){
             console.log("NO TARGET, EXIT TO NEXT LOOP ITER");
         }
         else if(currentNode.targets[i] != null && currentNode.targets[i].visited == false){
@@ -121,14 +121,15 @@ let traverser = (node) => {
         }
     }
 }
-allPaths.push(currentPath);
 
+allPaths.push(currentPath);
+console.log(`CURPATH: ${allPaths}`);
 board = buildBoard();
-//console.log(board);
 displayBoard(board);
 addTargets(board);
 //showTargets(board[0][0]);
 walker = traverser(board[0][0]);
+
 currentPath.forEach(e => {
     console.log(`[${e.row}][${e.col}]`);
 })
