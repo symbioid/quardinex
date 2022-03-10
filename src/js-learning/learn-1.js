@@ -16,15 +16,6 @@ const directionMatrix = [-1,1,1,-1];  //(row,up-)(col,right+)(row,down+)(row,)
 
 let board = [[],[],[]];
 
-let node = {
-	row : -1,
-	col : -1,
-	value : 0,
-	visited : false,
-	targets : [],
-	mostRecentTarget : 0
-}
-
 let buildNode = (row, col, val) => {
 	return {
 	  row : row,
@@ -42,9 +33,9 @@ let getNode = (board, row, col) => {
 
 let buildBoard = () => {
 	console.log(`Building Board \n...`)
-	for(let row=0; row < boardSize;row++){
-		for(let col=0; col < boardSize; col++){
-			val = level[row][col];
+	for(var row = 0; row < boardSize;row++){
+		for(var col=0; col < boardSize; col++){
+			let val = level[row][col];
 			board[row][col] = buildNode(row,col,val);
 		}
 	}
@@ -53,8 +44,8 @@ let buildBoard = () => {
 
 let displayBoard = (board) => {
 	console.log(`Displaying Board...`);
-	for (row = 0; row < boardSize; row++){
-		for(col = 0; col < boardSize; col++){
+	for (var row = 0; row < boardSize; row++){
+		for(var col = 0; col < boardSize; col++){
 			console.log(`${board[row][col].value}`);
 		}
 	}
@@ -63,10 +54,10 @@ let displayBoard = (board) => {
 }
 
 let addTargets = (board) => {
-	for(row=0; row < boardSize; row++) {
-		for (col=0; col < boardSize; col++ ) {
-			for (i = 0; i < numPolySides; i++) {
-				if(i % 2 == 0) {
+	for(var row = 0; row < boardSize; row++) {
+		for (var col=0; col < boardSize; col++ ) {
+			for (var i =0; i < numPolySides; i++) {
+				if(i % 2 === 0) {
 					targetRow = row + (board[row][col].value * directionMatrix[i]);
 					targetCol = col;
 				} else {
@@ -85,7 +76,7 @@ let addTargets = (board) => {
 	}
 }
 let showTargets = (node) =>{
-	for(i=0;i<numPolySides;i++){
+	for(var i = 0;i<numPolySides;i++){
 		if(node.targets[i] != null){
 			console.log(`target ${i}: [${node.targets[i].row}][${node.targets[i].col}]`);
 		}
@@ -95,29 +86,32 @@ let showTargets = (node) =>{
 	}
 }
 
-let traverser = (node) => {
-    currentNode = node;
-    if(currentNode.visited == false){
+function traverse(node){
+    var currentNode = node;
+    var prevNode = currentNode;
+
+    if(currentNode.visited === false){
         currentNode.visited = true;
         currentPath.push(currentNode);
     }
-    for (i = 0; i < numPolySides; i++) {
+    for (var i =0; i < numPolySides; i++) {
         console.log(`${i}:`);
-        if (i >= numPolySides){
+        if (i === numPolySides){
             allPaths.push(currentPath);
             currentNode = prevNode;
             console.log(`XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`);
+            traverse(currentNode);
         }
-        if (currentNode.targets[i] == null || currentNode.targets[i].visited == true){
+        if (currentNode.targets[i] == null || currentNode.targets[i].visited === true){
             console.log("NO TARGET, EXIT TO NEXT LOOP ITER");
         }
-        else if(currentNode.targets[i] != null && currentNode.targets[i].visited == false){
+        else if(currentNode.targets[i] != null && currentNode.targets[i].visited === false){
             prevNode = currentNode;
             currentNode = currentNode.targets[i];
             currentNode.visited = true;
             console.log(`MOVED TO [${currentNode.row}][${currentNode.col}], VALUE: ${currentNode.value}`);
             currentPath.push(currentNode);
-            traverser(currentNode);
+            traverse(currentNode);
         }
     }
 }
@@ -128,15 +122,15 @@ board = buildBoard();
 displayBoard(board);
 addTargets(board);
 //showTargets(board[0][0]);
-walker = traverser(board[0][0]);
+traverse(board[0][0]);
 
 currentPath.forEach(e => {
     console.log(`[${e.row}][${e.col}]`);
 })
 
 
-for (i = 0; i < allPaths.length; i++){
-    for( j = 0; j < allPaths[i].length; j++){
+for (var i =0; i < allPaths.length; i++){
+    for( var j =0; j < allPaths[i].length; j++){
         console.log(`[${allPaths[i][j].row}][${allPaths[i][j].col}], VALUE: ${allPaths[i][j].value}`);
     }
 }
