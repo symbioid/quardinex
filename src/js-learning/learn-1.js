@@ -7,6 +7,9 @@ let targetCol = 0;
 let allPaths = [];
 let currentPath = [];
 
+const deepCopy = (item) => {
+    return JSON.parse(JSON.stringify(item));
+}
 
 const level = [ [2, 1, 1],
 				[1, 1, 2],
@@ -87,25 +90,31 @@ let showTargets = (node) =>{
 }
 
 function traverse(node){
-    var currentNode = node;
-    var prevNode = currentNode;
+    let currentNode = node;
+    let prevNode = currentNode;
 
     if(currentNode.visited === false){
-        currentNode.visited = true;
-        currentPath.push(currentNode);
+         currentNode.visited = true;
+         currentPath.push(currentNode);
     }
-    for (var i =0; i < numPolySides; i++) {
+    for (var i =0; i <= numPolySides; i++) {
         console.log(`${i}:`);
         if (i === numPolySides){
-            allPaths.push(currentPath);
-            currentNode = prevNode;
-            console.log(`XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX`);
+            allPaths.push(currentPath); // PROBLEM NEED TO BUILD WHATEVER THE FUCK IT IS I WANT. ARRAY OF ARRAYS. EACH COMPLETE PATH.
+            if(currentPath.length === 1){
+                return;
+            }
+            currentPath.pop(); //currentPath showing as "object typeof"            
+            currentNode = currentPath[currentPath.length-1];
+            console.log("Length", currentPath.length);
+            console.log(`TOSSER`);
+            //console.log(currentNode);
             traverse(currentNode);
         }
         if (currentNode.targets[i] == null || currentNode.targets[i].visited === true){
             console.log("NO TARGET, EXIT TO NEXT LOOP ITER");
         }
-        else if(currentNode.targets[i] != null && currentNode.targets[i].visited === false){
+        else if (currentNode.targets[i] != null && currentNode.targets[i].visited === false){
             prevNode = currentNode;
             currentNode = currentNode.targets[i];
             currentNode.visited = true;
@@ -116,21 +125,24 @@ function traverse(node){
     }
 }
 
+
 allPaths.push(currentPath);
 console.log(`CURPATH: ${allPaths}`);
 board = buildBoard();
 displayBoard(board);
 addTargets(board);
-//showTargets(board[0][0]);
 traverse(board[0][0]);
 
+/*
 currentPath.forEach(e => {
     console.log(`[${e.row}][${e.col}]`);
 })
-
+*/
 
 for (var i =0; i < allPaths.length; i++){
-    for( var j =0; j < allPaths[i].length; j++){
+    for( var j =0; j < allPaths[i].length; j++) {
         console.log(`[${allPaths[i][j].row}][${allPaths[i][j].col}], VALUE: ${allPaths[i][j].value}`);
     }
 }
+
+//console.log(allPaths)
