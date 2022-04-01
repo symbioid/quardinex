@@ -28,7 +28,7 @@ let buildNode = (row, col, val) => {
 	  targets : [],
 	  mostRecentTarget : 0
 	}
-  }
+}
 
 let getNode = (board, row, col) => {
 	return board[row][col]
@@ -76,7 +76,8 @@ let addTargets = (board) => {
             board[row][col].targets[i] = {
               row : board[targetRow][targetCol].row,
               col : board[targetRow][targetCol].col,
-              value : board[targetRow][targetCol].value
+              value : board[targetRow][targetCol].value,
+              mostRecentTarget : 0
             }
 				}
 			}
@@ -104,11 +105,11 @@ function traverse(node){
          currentNode.visited = true;
          currentPath.push(currentNode);
     }
-    for (var i =0; i <= numPolySides; i++) {
-        //console.log(`${i}:`);
+    for (var i = node.mostRecentTarget; i <= numPolySides; i++) {
+        node.mostRecentTarget = i;
         if (i === numPolySides){
-            allPaths.push(currentPath); // PROBLEM NEED TO BUILD WHATEVER THE FUCK IT IS I WANT. ARRAY OF ARRAYS. EACH COMPLETE PATH.
-            if(currentPath.length === 1){
+            allPaths.push(currentPath);
+            if(currentPath.length === 0){
                 return;
             }
             currentPath.pop(); //currentPath showing as "object typeof"
@@ -118,10 +119,10 @@ function traverse(node){
             //console.log(currentNode);
             traverse(currentNode);
         }
-        else if (currentNode.targets[i] == null || currentNode.targets[i].visited === true){
+        else if (currentNode.targets[i] == null || !currentNode.targets[i].visited === true){ // currentNode.targets[i].visited
             console.log(`${i}:`, "No Target");
         }
-        else if (currentNode.targets[i] != null && currentNode.targets[i].visited === false){
+        else if (currentNode.targets[i] != null && currentNode.targets[i].visited === false){ //replace currentNode.targets[i].visited w/"if target in path"
             prevNode = currentNode;
             currentNode = currentNode.targets[i];
             currentNode.visited = true;
@@ -145,17 +146,21 @@ const walkTo = (node)=> {
   }
 
   for (let i=0; i<=numPolySides; i++) {
-    let target = node.targets[i]
-
+    let target = node.targets[i];
     if (i === numPolySides) {
-      if (currentPath.length === 0) return;
-      else allPaths.push(deepCopy(currentPath))
-      //board[node.row][node.col].visited = false;
+      
+      if (currentPath.length === 0) {
+        return;
+      }
+      allPaths.push(deepCopy(currentPath))
+      board[node.row][node.col].visited = false;
       currentPath.pop();
+
       let prevTarget = currentPath[currentPath.length-1];
       console.log(`${i}: All Targets Visited, Backup to [${prevTarget.row}][${prevTarget.col}]`);
       walkTo(board[prevTarget.row][prevTarget.col]);
     }
+
     else if (target && !board[target.row][target.col].visited) {
       console.log(`${i}: Target Not Yet Visited, Moving To [${target.row}][${target.col}], Value: ${target.value}`);
       walkTo(board[target.row][target.col]);
