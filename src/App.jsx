@@ -292,7 +292,7 @@ const App = ()=> {
   return (
     <div className="app">
         <h2>{message}</h2>
-        <h2>Playing Level {currentLevel}</h2> 
+        <h2>Playing Level {currentLevel+1}</h2> 
         <Grid board={board}/>
     </div>
   );
