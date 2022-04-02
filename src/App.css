@@ -12,9 +12,15 @@ body {
 .app {
   display: flex;
   min-height: 100vh;
-  flex-direction: column;
+  /*flex-direction: column;*/
   align-items: center;
   justify-content: center;
+}
+
+
+.levelselect, .game {
+  flex: 0 0 auto;
+  width: 33%;
 }
 
 h2 {
@@ -24,13 +30,36 @@ h2 {
   margin-bottom: 20px;
 }
 
+.levelNumber {
+  cursor: pointer;
+  flex: 0 0 auto;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  color: #dad3c3;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-size) solid var(--border-color);
+  font-size: 28px;
+}
+
+.levelMenu{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+
+}
 .grid {
+  /*display: flex;*/
+  align-self: center;
+  width: 500px;
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
+  /*width: 100%;*/
 }
 
 .cell {
