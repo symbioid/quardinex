@@ -15,7 +15,6 @@ body {
   /*flex-direction: column;*/
   align-items: center;
   justify-content: center;
-  color: white;
 }
 
 
@@ -27,7 +26,7 @@ body {
 h2 {
   width: 100%;
   color: white;
-  text-align: center;
+  /* text-align: center; */
   margin-bottom: 20px;
 }
 
@@ -46,17 +45,26 @@ h2 {
 }
 
 .levelMenu{
+  justify-content: center;
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
+  width: 50%;
 
 }
 .grid {
-  /*display: flex;*/
+  justify-content: center;
   align-self: center;
   width: 500px;
 }
 
+.instructions{
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  width: 20%;
+  color: #dad3c3;
+  font-size: 20px;
+}
 .row {
   display: flex;
   flex-wrap: wrap;
