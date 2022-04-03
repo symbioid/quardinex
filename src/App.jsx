@@ -319,6 +319,27 @@ const App = ()=> {
   return (
     <div className="app">
       <div className="container">
+        <div className="instructions">
+          <h2>&nbsp;</h2>
+          <h2>Instructions</h2>
+          Welcome to Quardinex! Your mission is to visit every square on the board.<br />
+          ---<br />        
+          [Turquoise Square] : You Are Here<br />
+          [Orange Squares] : You Can Go Here.<br />
+          [Cream Squares] : Use This Info To Help Plan Ahead<br />
+          [Numbers] : Move Amount<br />
+          ---<br />
+          You can move Up, Down, Left, or Right.<br />
+          The number of spaces you can move is determined by the Square.<br />
+          ---<br />
+          When you select an Orange Target, that becomes your new position.<br />
+          The Turquoise Square you just left is now removed.<br />
+          ---<br />
+          Keep moving along until you land on one final square.<br />
+          ---<br />
+          Some Boards May Have More Than One Solution.<br />
+        </div>
+
         <div className="game">
           <h2>{message}</h2>
           <h2>Playing Level {currentLevel+1}</h2>
