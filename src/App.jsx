@@ -300,31 +300,40 @@ const App = ()=> {
 
   const LevelSelect = ()=> {
     return (
-      <div className="levelMenu">
+      <div className="level-menu">
+        <div className="level-menu-row">
         {
           levels.map((level, index)=> {
             return (
-              <div className="levelNumber" onClick={()=> { loadLevel(index); }}>
+              <div className="level-number" onClick={()=> { loadLevel(index); }}>
                {index + 1}
               </div>
             )
           })
         }
+        </div>
       </div>
     );
   }
 
   return (
     <div className="app">
-      <div className="game">
-        <h2>{message}</h2>
-        <h2>Playing Level {currentLevel+1}</h2>
-        <Grid board={board}/>
-      </div>
+      <div className="container">
+        <div className="game">
+          <h2>{message}</h2>
+          <h2>Playing Level {currentLevel+1}</h2>
+          <div className="grid-container">
+            <Grid board={board}/>
+          </div>
+        </div>
 
-      <div className = "levelselect">
-        <h2>Level Select</h2>
-        <LevelSelect />
+        <div className="levelselect">
+          <h2>&nbsp;</h2>
+          <h2>Level Select</h2>
+          <div className="level-menu-container">
+            <LevelSelect />
+          </div>
+        </div>
       </div>
     </div>
   );
