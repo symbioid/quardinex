@@ -205,15 +205,17 @@ let numTurns = 0;
 
 let currentLevel = getRandomInt(25);
 let boardSize = levels[currentLevel].length;
-const board = levels[currentLevel];
+//const board = levels[currentLevel];
+
 
 
 const App = ()=> {
   const [selected, setSelected] = useState({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1] });
   //const [selected, setSelected] = useState({ row: -1, col: -1});
   const [selectedVal, setSelectedVal] = useState();
-  const [removed, setRemoved] = useState([]);
+  const [removed, setRemoved] = useState([startPoint[currentLevel][0] + "," + startPoint[currentLevel][1]]);
   const [message, setMessage] = useState("QUARDINEX");
+  const [board, setBoard] = useState(levels[currentLevel]);
 
   useEffect(()=> {
     if (selected.row === -1) return;
@@ -221,8 +223,8 @@ const App = ()=> {
   }, [selected]);
 
 
-  const checkCell = (rowNum, colNum, hit)=> {
-    if (!hit && selectedVal) return;
+  const checkCell = (rowNum, colNum, targetable)=> {
+    if (!targetable && selectedVal) return;
     else {
       setRemoved([...removed, rowNum + "," + colNum]);
     }
@@ -234,31 +236,39 @@ const App = ()=> {
     }
   }
 
+  const loadLevel = (selectedLevel) => {
+    currentLevel = selectedLevel;
+    setBoard(levels[currentLevel]);
+    setSelected({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1] });
+    setSelectedVal(null);
+    setRemoved([startPoint[currentLevel][0] + "," + startPoint[currentLevel][1]]);
+    setMessage("QUARDINEX");
+  }
 
   const Cell = ({cell, rowNum, colNum})=> {
     let cellStyle = "cell";
-    let hit = false;
+    let targetable = false;
 
     if ((rowNum === selected.row-selectedVal && colNum === selected.col) ||
         (rowNum === selected.row+selectedVal && colNum === selected.col) ||
         (rowNum === selected.row && colNum === selected.col-selectedVal) ||
         (rowNum === selected.row && colNum === selected.col+selectedVal)) {
       cellStyle += " cell-target";
-      hit = true;
+      targetable = true;
     }
 
     if (removed.indexOf(rowNum + "," + colNum) !== -1) {
       cellStyle += " cell-removed";
-      hit = false;
+      targetable = false;
     }
 
     if (selected.row === rowNum && selected.col === colNum) {
       cellStyle += " cell-active";
-      hit = false;
+      targetable = false;
     }
 
     return (
-      <div className={cellStyle} onClick={()=> { checkCell(rowNum, colNum, hit) }}>{cell}</div>
+      <div className={cellStyle} onClick={()=> { checkCell(rowNum, colNum, targetable) }}>{cell}</div>
     );
   }
 
@@ -288,12 +298,34 @@ const App = ()=> {
     );
   }
 
+  const LevelSelect = ()=> {
+    return (
+      <div className="levelMenu">
+        {
+          levels.map((level, index)=> {
+            return (
+              <div className="levelNumber" onClick={()=> { loadLevel(index); }}>
+               {index + 1}
+              </div>
+            )
+          })
+        }
+      </div>
+    );
+  }
 
   return (
     <div className="app">
+      <div className="game">
         <h2>{message}</h2>
-        <h2>Playing Level {currentLevel+1}</h2> 
+        <h2>Playing Level {currentLevel+1}</h2>
         <Grid board={board}/>
+      </div>
+
+      <div className = "levelselect">
+        <h2>Level Select</h2>
+        <LevelSelect />
+      </div>
     </div>
   );
 }
