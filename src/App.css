@@ -11,30 +11,64 @@ body {
 
 .app {
   display: flex;
+  width: 100%;
   min-height: 100vh;
   /*flex-direction: column;*/
   align-items: center;
   justify-content: center;
 }
 
+.container {
+  display: flex;
+  margin: 40px;
+  height: 600px;
+  /*flex-direction: column;*/
+  /*align-items: center;*/
+  /*justify-content: center;*/
+}
+
 
 .levelselect, .game {
-  flex: 0 0 auto;
-  width: 33%;
+  /*flex: 0 0 auto;
+  width: 33%;*/
 }
 
 h2 {
   width: 100%;
   color: white;
-  /* text-align: center; */
+  text-align: center;
   margin-bottom: 20px;
 }
 
-.levelNumber {
+.instructions{
+  width: 25%;
+  color: #dad3c3;
+}
+
+.levelselect {
+  flex: 1 0 auto;
+  width: 200px;
+}
+
+.level-menu-container {
+  display: flex;
+  justify-content: center;
+}
+
+.level-menu{
+  width: 300px;
+}
+
+.level-menu-row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.level-number {
   cursor: pointer;
   flex: 0 0 auto;
-  width: var(--cell-size);
-  height: var(--cell-size);
+  width: 60px;
+  height: 60px;
   color: #dad3c3;
   overflow: hidden;
   display: flex;
@@ -44,31 +78,27 @@ h2 {
   font-size: 28px;
 }
 
-.levelMenu{
-  justify-content: center;
-  display: flex;
-  flex-wrap: wrap;
-  width: 50%;
-
+.level-number:hover {
+  color: #5abbb3;
 }
-.grid {
-  justify-content: center;
-  align-self: center;
+
+
+.game {
+  flex: 1 0 auto;
   width: 500px;
 }
 
-.instructions{
-  justify-content: center;
+.grid-container {
   display: flex;
-  flex-wrap: wrap;
-  width: 20%;
-  color: #dad3c3;
-  font-size: 20px;
+  justify-content: center;
 }
+
+.grid {
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;
-  /*width: 100%;*/
 }
 
 .cell {
