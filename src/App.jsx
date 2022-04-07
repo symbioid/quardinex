@@ -203,24 +203,26 @@ const startPoint = [
 
 let numTurns = 0;
 
-let currentLevel = getRandomInt(25);
+let currentLevel = 0;
 let boardSize = levels[currentLevel].length;
 //const board = levels[currentLevel];
 
 
 
 const App = ()=> {
+  const [currentLevel, setCurrentLevel] = useState(0); 
   const [selected, setSelected] = useState({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1] });
   //const [selected, setSelected] = useState({ row: -1, col: -1});
   const [selectedVal, setSelectedVal] = useState();
   const [removed, setRemoved] = useState([startPoint[currentLevel][0] + "," + startPoint[currentLevel][1]]);
   const [message, setMessage] = useState("QUARDINEX");
   const [board, setBoard] = useState(levels[currentLevel]);
-
+  const [boardSize, setBoardSize] = useState();
+  
   useEffect(()=> {
     if (selected.row === -1) return;
     setSelectedVal(board[selected.row][selected.col]);
-  }, [selected]);
+  });
 
 
   const checkCell = (rowNum, colNum, targetable)=> {
@@ -237,8 +239,12 @@ const App = ()=> {
   }
 
   const loadLevel = (selectedLevel) => {
-    currentLevel = selectedLevel;
+    const currentLevel = selectedLevel;
+    setCurrentLevel(selectedLevel);
+    console.log(`${currentLevel}`);
     setBoard(levels[currentLevel]);
+    setBoardSize(board[0].length);
+    console.log(`BoardSize: ${boardSize}`);
     setSelected({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1] });
     setSelectedVal(null);
     setRemoved([startPoint[currentLevel][0] + "," + startPoint[currentLevel][1]]);
@@ -323,29 +329,38 @@ const App = ()=> {
           <h2>&nbsp;</h2>
           <h2>Instructions</h2>
           Welcome to Quardinex! Your mission is to visit every square on the board.<br />
-          ---<br />        
+          <hr />
           [Turquoise Square] : You Are Here<br />
           [Orange Squares] : You Can Go Here.<br />
-          [Cream Squares] : Use This Info To Help Plan Ahead<br />
           [Numbers] : Move Amount<br />
-          ---<br />
+          [Cream Squares] : Use This Info To Help Plan Ahead<br />
+          <hr />
           You can move Up, Down, Left, or Right.<br />
-          The number of spaces you can move is determined by the Square.<br />
-          ---<br />
+          <hr />
+          The number of spaces you can move from your position is determined by the number on that turquoise square.<br />
+          <hr />
           When you select an Orange Target, that becomes your new position.<br />
-          The Turquoise Square you just left is now removed.<br />
-          ---<br />
-          Keep moving along until you land on one final square.<br />
-          ---<br />
-          Some Boards May Have More Than One Solution.<br />
+          The Turquoise Square you just moved from is now removed.<br />
+          <hr />
+          Keep going until you land on one final square.  <br />
+          WINNER WINNER CHICKEN DINNER!<br />
+          <hr />
+          Some boards may have more than one solution.<br />
+          <hr />
+          <strong>Upcoming Features</strong><br />
+          Popup "Reload" button when no more moves left.<br />
+          Popup "Next Level" button after beating level.<br />
+          And bigger features that may not ever happen.<br />
         </div>
 
         <div className="game">
           <h2>{message}</h2>
           <h2>Playing Level {currentLevel+1}</h2>
           <div className="grid-container">
-            <Grid board={board}/>
+            <Grid board={board} />
           </div>
+          <h3>Note: To reload level make note of your current level number at the top of the game,
+          then click the level number to the right.` </h3>
         </div>
 
         <div className="levelselect">
