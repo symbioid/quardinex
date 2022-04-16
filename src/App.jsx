@@ -313,7 +313,7 @@ const App = ()=> {
           levels.map((level, index)=> {
             return (
               <div className="level-number" onClick={()=> { loadLevel(index); }}>
-               {index}
+               {index+1}
               </div>
             )
           })
