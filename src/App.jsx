@@ -191,7 +191,7 @@ const startPoint = [
   [1,1],//15
   [0,0],//16
   [1,2],//17
-  [4,0],//18  
+  [4,0],//18
   [2,1],//19
   [2,1],//20
   [4,4],//21
@@ -201,28 +201,24 @@ const startPoint = [
   [2,3],//25
 ]
 
-let numTurns = 0;
 
-let currentLevel = 0;
-let boardSize = levels[currentLevel].length;
-//const board = levels[currentLevel];
+
 
 
 
 const App = ()=> {
-  const [currentLevel, setCurrentLevel] = useState(0); 
+  const [currentLevel, setCurrentLevel] = useState(0);
   const [selected, setSelected] = useState({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1] });
-  //const [selected, setSelected] = useState({ row: -1, col: -1});
-  const [selectedVal, setSelectedVal] = useState();
+  const [selectedVal, setSelectedVal] = useState(0);
   const [removed, setRemoved] = useState([startPoint[currentLevel][0] + "," + startPoint[currentLevel][1]]);
   const [message, setMessage] = useState("QUARDINEX");
   const [board, setBoard] = useState(levels[currentLevel]);
-  const [boardSize, setBoardSize] = useState();
-  
+  const [boardSize, setBoardSize] = useState(levels[currentLevel].length);
+
   useEffect(()=> {
     if (selected.row === -1) return;
     setSelectedVal(board[selected.row][selected.col]);
-  });
+  }, [selected.row, selected.col, board]);
 
 
   const checkCell = (rowNum, colNum, targetable)=> {
@@ -233,22 +229,27 @@ const App = ()=> {
 
     setSelected({ row: rowNum, col: colNum });
 
-    if (removed.length === (boardSize * boardSize)-1) {
+    if (removed.length === (boardSize * boardSize)-1) {  // need to reset boardsize
       setMessage("BUTTONS PROPER FUCKED!");
     }
   }
 
   const loadLevel = (selectedLevel) => {
     const currentLevel = selectedLevel;
-    setCurrentLevel(selectedLevel);
-    console.log(`${currentLevel}`);
+    setCurrentLevel(currentLevel);
+
     setBoard(levels[currentLevel]);
-    setBoardSize(board[0].length);
-    console.log(`BoardSize: ${boardSize}`);
+    
+
     setSelected({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1] });
-    setSelectedVal(null);
+    //setSelectedVal(null);
     setRemoved([startPoint[currentLevel][0] + "," + startPoint[currentLevel][1]]);
     setMessage("QUARDINEX");
+
+    console.log(`${currentLevel}`);
+    setBoardSize(levels[currentLevel].length);
+    console.log(`BoardSize: ${boardSize}`);
+    console.log(`${levels[currentLevel].length}`);
   }
 
   const Cell = ({cell, rowNum, colNum})=> {
@@ -312,7 +313,7 @@ const App = ()=> {
           levels.map((level, index)=> {
             return (
               <div className="level-number" onClick={()=> { loadLevel(index); }}>
-               {index + 1}
+               {index}
               </div>
             )
           })
@@ -374,6 +375,5 @@ const App = ()=> {
     </div>
   );
 }
-
 
 export default App;
