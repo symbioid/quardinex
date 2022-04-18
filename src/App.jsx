@@ -236,20 +236,13 @@ const App = ()=> {
 
   const loadLevel = (selectedLevel) => {
     const currentLevel = selectedLevel;
-    setCurrentLevel(currentLevel);
-
-    setBoard(levels[currentLevel]);
     
-
+    setCurrentLevel(currentLevel);
+    setBoard(levels[currentLevel]);
     setSelected({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1] });
-    //setSelectedVal(null);
     setRemoved([startPoint[currentLevel][0] + "," + startPoint[currentLevel][1]]);
     setMessage("QUARDINEX");
-
-    console.log(`${currentLevel}`);
     setBoardSize(levels[currentLevel].length);
-    console.log(`BoardSize: ${boardSize}`);
-    console.log(`${levels[currentLevel].length}`);
   }
 
   const Cell = ({cell, rowNum, colNum})=> {
@@ -305,6 +298,14 @@ const App = ()=> {
     );
   }
 
+  const Reload = ()=> {
+    return (
+        <div className="level-number" onClick={()=> { loadLevel(currentLevel); }}>
+        RELOAD
+        </div>
+    );
+  }
+
   const LevelSelect = ()=> {
     return (
       <div className="level-menu">
@@ -357,11 +358,10 @@ const App = ()=> {
         <div className="game">
           <h2>{message}</h2>
           <h2>Playing Level {currentLevel+1}</h2>
+          <h2><Reload reload={currentLevel} /></h2>
           <div className="grid-container">
             <Grid board={board} />
           </div>
-          <h3>Note: To reload level make note of your current level number at the top of the game,
-          then click the level number to the right.` </h3>
         </div>
 
         <div className="levelselect">
