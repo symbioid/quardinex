@@ -7,7 +7,7 @@ function getRandomInt(max) {
 }
 
 const levels = [
-  [ // 1 start @ [1][1]
+  [ // 1 start @ [0][0]
     [2,1,1],
     [1,1,2],
     [1,1,2],
@@ -25,10 +25,10 @@ const levels = [
     [1,2,1,2],
   ],
   [ // 4 start @ [1][1]
-    [3,1,3,2],
-    [1,2,2,1],
+    [3,1,2,2],
+    [1,2,2,2],
     [3,1,1,1],
-    [1,1,1,3],
+    [2,1,1,3],
   ],
   [ // 5 start @ [0][0]
     [2,2,2,1],
@@ -38,7 +38,7 @@ const levels = [
   ],
   [ // 6 start @ [1][2]
     [2,2,1,3],
-    [2,2,2,1],
+    [1,2,1,1],
     [3,1,2,1],
     [1,1,1,2],
   ],
@@ -174,7 +174,7 @@ const levels = [
 ];
 
 const startPoint = [
-  [1,1], //1
+  [0,0], //1
   [2,2], //2
   [2,2], //3
   [1,1],//4
@@ -208,7 +208,7 @@ const startPoint = [
 
 const App = ()=> {
   const [currentLevel, setCurrentLevel] = useState(0);
-  const [selected, setSelected] = useState({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1] });
+  const [selected, setSelected] = useState({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][0] });
   const [selectedVal, setSelectedVal] = useState(0);
   const [removed, setRemoved] = useState([startPoint[currentLevel][0] + "," + startPoint[currentLevel][1]]);
   const [message, setMessage] = useState("QUARDINEX");
@@ -230,13 +230,13 @@ const App = ()=> {
     setSelected({ row: rowNum, col: colNum });
 
     if (removed.length === (boardSize * boardSize)-1) {  // need to reset boardsize
-      setMessage("BUTTONS PROPER FUCKED!");
+      setMessage("Winner Winner 🍗 Chicken Dinner ");
     }
   }
 
   const loadLevel = (selectedLevel) => {
     const currentLevel = selectedLevel;
-    
+
     setCurrentLevel(currentLevel);
     setBoard(levels[currentLevel]);
     setSelected({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1] });
@@ -300,8 +300,8 @@ const App = ()=> {
 
   const Reload = ()=> {
     return (
-        <div className="level-number" onClick={()=> { loadLevel(currentLevel); }}>
-        RELOAD
+        <div align="center" className="reload" onClick={()=> { loadLevel(currentLevel); }}>
+        Reload Level
         </div>
     );
   }
@@ -345,7 +345,8 @@ const App = ()=> {
           The Turquoise Square you just moved from is now removed.<br />
           <hr />
           Keep going until you land on one final square.  <br />
-          WINNER WINNER CHICKEN DINNER!<br />
+          You beat the level. <br />
+          Select the next level.<br />
           <hr />
           Some boards may have more than one solution.<br />
           <hr />
