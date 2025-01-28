@@ -204,13 +204,16 @@ const startPoint = [
 ]
 
 const App = ()=> {
+
   const [currentLevel, setCurrentLevel] = useState(0);
   const [selected, setSelected] = useState({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1] });
   const [selectedVal, setSelectedVal] = useState(0);
   const [removed, setRemoved] = useState([startPoint[currentLevel][0] + "," + startPoint[currentLevel][1]]);
   const [message, setMessage] = useState("QUARDINEX");
+  const [reloadButton, setReloadButton] = useState("Reload Level");
   const [board, setBoard] = useState(levels[currentLevel]);
   const [boardSize, setBoardSize] = useState(levels[currentLevel].length);
+  let win =() => (removed.length === (boardSize * boardSize)-1)?true:false;
 
   useEffect(()=> {
     if (selected.row === -1) return;
@@ -218,27 +221,32 @@ const App = ()=> {
   }, [selected.row, selected.col, board]);
 
 
-  const checkCell = (rowNum, colNum, targetable)=> {
+  const checkCell = async (rowNum, colNum, targetable)=> {
     if (!targetable && selectedVal) return;
     else {
-      setRemoved([...removed, rowNum + "," + colNum]);
+      await setRemoved([...removed, rowNum + "," + colNum]);
+      console.log(removed);
     }
-
     setSelected({ row: rowNum, col: colNum });
 
-    if (removed.length === (boardSize * boardSize)-1) {  // need to reset boardsize
+    if(win()) {
       setMessage("Winner Winner 🍗 Chicken Dinner ");
+      setReloadButton("Load Next Level");
+      console.log("inside win_check ", win());
+      console.log(removed.length, boardSize)
     }
   }
 
-  const loadLevel = (selectedLevel) => {
-    const currentLevel = selectedLevel;
-
-    setCurrentLevel(currentLevel);
+  const loadLevel = async (selectedLevel) => {
+    console.log(win());
+    console.log(removed, boardSize)
+    //if (win()) {selectedLevel++};
+    await setCurrentLevel(selectedLevel);
     setBoard(levels[currentLevel]);
-    setSelected({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1] });
-    setRemoved([startPoint[currentLevel][0] + "," + startPoint[currentLevel][1]]);
+    setSelected({ row: startPoint[currentLevel][0], col: startPoint[currentLevel][1]});
+    setRemoved([]);
     setMessage("QUARDINEX");
+    setReloadButton("Reload Level");
     setBoardSize(levels[currentLevel].length);
   }
 
@@ -268,8 +276,6 @@ const App = ()=> {
       <div className={cellStyle} onClick={()=> { checkCell(rowNum, colNum, targetable) }}>{cell}</div>
     );
   }
-
-
   const Row = ({row, rowNum})=> {
     return (
       <div className="row">
@@ -281,8 +287,6 @@ const App = ()=> {
       </div>
     );
   }
-
-
   const Grid = ({board})=> {
     return (
       <div className="grid">
@@ -294,15 +298,22 @@ const App = ()=> {
       </div>
     );
   }
-
   const Reload = ()=> {
     return (
         <div align="center" className="reload" onClick={()=> { loadLevel(currentLevel); }}>
-        Reload Level
+        {reloadButton}
         </div>
     );
   }
 
+  const LoadNextLevel = ()=> {
+    return (
+        <div align="center" className="reload" onClick={()=> { loadLevel(currentLevel+1); }}>
+        {reloadButton}
+        </div>
+    );
+  }
+  
   const LevelSelect = ()=> {
     return (
       <div className="level-menu">
